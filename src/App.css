@@ -1,0 +1,4660 @@
+/* ========================================
+   CODE ISLAND
+   COMPLETE GAME STYLE
+======================================== */
+
+:root {
+  --sky-top: #f6dcb9;
+  --sky-bottom: #efc7b8;
+
+  --grass: #82b965;
+  --grass-light: #91c975;
+  --grass-dark: #4e813e;
+  --grass-edge: #5d9649;
+
+  --sand: #d9bc7d;
+
+  --panel: #f5e8d5;
+  --panel-dark: #dcc6a8;
+
+  --text: #46372c;
+  --muted: #806b54;
+
+  --green: #71a74f;
+  --green-dark: #4f7f38;
+
+  --blue: #5b91c7;
+  --orange: #d87c55;
+  --purple: #9b6bb3;
+}
+
+/* ========================================
+   GLOBAL
+======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Trebuchet MS", "Poppins", sans-serif;
+  background: #d8c0a4;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ========================================
+   START SCREEN
+======================================== */
+
+.start-screen {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f5d8b3 0%,
+      #f1c9ba 55%,
+      #9ed4d8 100%
+    );
+}
+
+.start-card {
+  width: min(550px, 90%);
+
+  padding: 50px;
+
+  text-align: center;
+
+  background: rgba(255, 247, 235, 0.96);
+
+  border: 5px solid #6f573f;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 12px 0 #5c4634,
+    0 25px 45px rgba(0, 0, 0, 0.18);
+}
+
+.start-island {
+  font-size: 85px;
+
+  animation: floating 3s ease-in-out infinite;
+}
+
+.mini-title {
+  margin-top: 10px;
+
+  font-size: 12px;
+
+  font-weight: bold;
+
+  letter-spacing: 2px;
+
+  color: #8a6c4e;
+}
+
+.start-card h1 {
+  margin: 15px 0;
+
+  font-size: clamp(55px, 9vw, 85px);
+
+  line-height: 0.9;
+
+  color: #405b37;
+}
+
+.start-card h1 span {
+  color: #df7148;
+}
+
+.start-card p:not(.mini-title) {
+  font-size: 18px;
+
+  line-height: 1.6;
+}
+
+.start-game-button {
+  margin-top: 30px;
+
+  padding: 17px 30px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background: #e8784a;
+
+  color: white;
+
+  font-size: 17px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  box-shadow: 0 6px 0 #a94e31;
+
+  transition: 0.2s;
+}
+
+.start-game-button:hover {
+  transform: translateY(-3px);
+}
+
+.start-game-button:active {
+  transform: translateY(3px);
+
+  box-shadow: 0 2px 0 #a94e31;
+}
+
+/* ========================================
+   GAME PAGE
+======================================== */
+
+.game-page {
+  min-height: 100vh;
+
+  background: #d8c0a4;
+
+  overflow: hidden;
+}
+
+.game-main {
+  min-height: calc(100vh - 68px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  background:
+    linear-gradient(
+      180deg,
+      #e8cda9 0%,
+      #e9c1bd 100%
+    );
+
+  position: relative;
+}
+
+/* ========================================
+   HUD
+======================================== */
+
+.game-hud {
+  height: 68px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 0 25px;
+
+  background: #f4e7d3;
+
+  border-bottom: 4px solid #8d755c;
+
+  box-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.08);
+
+  position: relative;
+
+  z-index: 100;
+}
+
+.menu-button {
+  width: 42px;
+  height: 42px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: #e1cfb5;
+
+  font-size: 21px;
+
+  cursor: pointer;
+}
+
+.game-title {
+  margin-left: 18px;
+
+  font-size: 22px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  color: #405b37;
+}
+
+.game-title span {
+  color: #df7148;
+}
+
+.hud-stats {
+  margin-left: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+.stat {
+  min-width: 75px;
+
+  padding: 8px 12px;
+
+  border-radius: 9px;
+
+  background: #dfceb5;
+
+  text-align: center;
+
+  font-size: 14px;
+}
+
+.stat strong {
+  margin-left: 4px;
+}
+
+/* ========================================
+   CHALLENGE HEADER
+======================================== */
+
+.challenge-title {
+  min-height: 65px;
+
+  padding: 10px 28px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  background:
+    rgba(255, 247, 235, 0.82);
+
+  border-bottom: 2px solid #b89e7e;
+
+  position: relative;
+
+  z-index: 50;
+}
+
+.challenge-title span {
+  font-size: 10px;
+
+  font-weight: bold;
+
+  letter-spacing: 2px;
+
+  color: #8c7356;
+}
+
+.challenge-title h1 {
+  margin-top: 2px;
+
+  font-size: 19px;
+
+  color: #405b37;
+}
+
+.challenge-info {
+  padding: 8px 15px;
+
+  border-radius: 8px;
+
+  background: #d7c1a4;
+
+  font-size: 11px;
+
+  font-weight: bold;
+}
+
+/* ========================================
+   GAME WORLD
+======================================== */
+
+.game-world {
+  position: relative;
+
+  flex: 1;
+
+  min-height: 430px;
+
+  overflow: hidden;
+}
+
+.world-sky {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--sky-top) 0%,
+      var(--sky-bottom) 100%
+    );
+}
+
+/* ========================================
+   SKY
+======================================== */
+
+.sun {
+  position: absolute;
+
+  top: 22px;
+  right: 65px;
+
+  font-size: 52px;
+
+  opacity: 0.9;
+}
+
+.cloud {
+  position: absolute;
+
+  font-size: 43px;
+
+  opacity: 0.55;
+
+  animation:
+    cloudMove
+    8s
+    ease-in-out
+    infinite;
+}
+
+.cloud-1 {
+  top: 48px;
+  left: 10%;
+}
+
+.cloud-2 {
+  top: 110px;
+  right: 17%;
+}
+
+.island-name {
+  position: absolute;
+
+  top: 20px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 9px 20px;
+
+  border-radius: 22px;
+
+  background: rgba(255, 247, 235, 0.94);
+
+  color: #405b37;
+
+  font-size: 12px;
+
+  font-weight: 900;
+
+  letter-spacing: 2px;
+
+  box-shadow:
+    0 7px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   ISOMETRIC ISLAND
+======================================== */
+
+.island {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 470px;
+  height: 280px;
+
+  transform:
+    translate(-50%, -44%)
+    rotateX(55deg)
+    rotateZ(-45deg);
+
+  transform-style: preserve-3d;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--grass-light),
+      var(--grass)
+    );
+
+  border: 7px solid var(--grass-edge);
+
+  border-radius: 28px;
+
+  box-shadow:
+    28px 28px 0 #4f803f,
+    52px 52px 0 #426e36,
+    68px 70px 28px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   GRID
+======================================== */
+
+.island-tile {
+  position: absolute;
+
+  width: 20%;
+  height: 20%;
+
+  border-right: 1px solid rgba(40, 80, 30, 0.12);
+  border-bottom: 1px solid rgba(40, 80, 30, 0.12);
+
+  pointer-events: none;
+}
+
+.tile-0 {
+  left: 0;
+  top: 0;
+}
+
+.tile-1 {
+  left: 20%;
+  top: 0;
+}
+
+.tile-2 {
+  left: 40%;
+  top: 0;
+}
+
+.tile-3 {
+  left: 60%;
+  top: 0;
+}
+
+.tile-4 {
+  left: 80%;
+  top: 0;
+}
+
+.tile-5 {
+  left: 0;
+  top: 20%;
+}
+
+.tile-6 {
+  left: 20%;
+  top: 20%;
+}
+
+.tile-7 {
+  left: 40%;
+  top: 20%;
+}
+
+.tile-8 {
+  left: 60%;
+  top: 20%;
+}
+
+.tile-9 {
+  left: 80%;
+  top: 20%;
+}
+
+.tile-10 {
+  left: 0;
+  top: 40%;
+}
+
+.tile-11 {
+  left: 20%;
+  top: 40%;
+}
+
+.tile-12 {
+  left: 40%;
+  top: 40%;
+}
+
+.tile-13 {
+  left: 60%;
+  top: 40%;
+}
+
+.tile-14 {
+  left: 80%;
+  top: 40%;
+}
+
+.tile-15 {
+  left: 0;
+  top: 60%;
+}
+
+.tile-16 {
+  left: 20%;
+  top: 60%;
+}
+
+.tile-17 {
+  left: 40%;
+  top: 60%;
+}
+
+.tile-18 {
+  left: 60%;
+  top: 60%;
+}
+
+.tile-19 {
+  left: 80%;
+  top: 60%;
+}
+
+.tile-20 {
+  left: 0;
+  top: 80%;
+}
+
+.tile-21 {
+  left: 20%;
+  top: 80%;
+}
+
+.tile-22 {
+  left: 40%;
+  top: 80%;
+}
+
+.tile-23 {
+  left: 60%;
+  top: 80%;
+}
+
+.tile-24 {
+  left: 80%;
+  top: 80%;
+}
+
+/* ========================================
+   START MARKER
+======================================== */
+
+.start-marker {
+  position: absolute;
+
+  left: 10%;
+  top: 90%;
+
+  width: 54px;
+  height: 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #c9a866;
+
+  border: 2px solid #a8854c;
+
+  border-radius: 5px;
+
+  transform:
+    translate(-50%, -50%)
+    rotateZ(45deg)
+    rotateX(-55deg);
+
+  z-index: 10;
+}
+
+.start-marker span {
+  transform:
+    rotateZ(-45deg)
+    rotateX(55deg);
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  color: #5d4729;
+
+  letter-spacing: 1px;
+}
+
+/* ========================================
+   3D WORLD OBJECTS
+======================================== */
+
+.world-item {
+  position: absolute;
+
+  z-index: 25;
+
+  width: 70px;
+  height: 70px;
+
+  transform:
+    translate(-50%, -70%)
+    rotateZ(45deg)
+    rotateX(-55deg);
+
+  transform-style: preserve-3d;
+
+  pointer-events: none;
+}
+
+.object-shadow {
+  position: absolute;
+
+  left: 50%;
+  bottom: 2px;
+
+  width: 48px;
+  height: 20px;
+
+  transform:
+    translateX(-50%)
+    rotateZ(-20deg);
+
+  background:
+    rgba(35, 65, 25, 0.28);
+
+  border-radius: 50%;
+
+  filter: blur(2px);
+
+  z-index: 0;
+}
+
+.object-emoji {
+  position: absolute;
+
+  left: 50%;
+  bottom: 8px;
+
+  transform:
+    translateX(-50%);
+
+  font-size: 47px;
+
+  line-height: 1;
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.22)
+    );
+
+  z-index: 2;
+}
+
+/* ========================================
+   TREE POSITIONS
+======================================== */
+
+.tree-1 {
+  left: 18%;
+  top: 28%;
+}
+
+.tree-2 {
+  left: 78%;
+  top: 40%;
+}
+
+.tree-3 {
+  left: 34%;
+  top: 78%;
+}
+
+.tree-3 .object-emoji {
+  font-size: 43px;
+}
+
+/* ========================================
+   ROCK POSITIONS
+======================================== */
+
+.rock-1 {
+  left: 45%;
+  top: 27%;
+}
+
+.rock-2 {
+  left: 62%;
+  top: 68%;
+}
+
+.rock .object-emoji {
+  font-size: 28px;
+}
+
+/* ========================================
+   CAMP
+======================================== */
+
+.camp {
+  position: absolute;
+
+  left: 74%;
+  top: 18%;
+
+  width: 100px;
+  height: 100px;
+
+  z-index: 35;
+
+  transform:
+    translate(-50%, -65%)
+    rotateZ(45deg)
+    rotateX(-55deg);
+
+  transform-style: preserve-3d;
+
+  pointer-events: none;
+}
+
+.camp-ground {
+  position: absolute;
+
+  left: 50%;
+  bottom: 5px;
+
+  width: 88px;
+  height: 42px;
+
+  transform:
+    translateX(-50%)
+    rotateZ(-5deg);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      #c8a968 0%,
+      #d7bb7c 55%,
+      transparent 57%
+    );
+
+  z-index: 0;
+}
+
+.camp-tent {
+  position: absolute;
+
+  left: 50%;
+  bottom: 20px;
+
+  transform:
+    translateX(-50%);
+
+  font-size: 58px;
+
+  line-height: 1;
+
+  filter:
+    drop-shadow(
+      4px 6px 2px rgba(0, 0, 0, 0.2)
+    );
+
+  z-index: 3;
+}
+
+.camp-fire {
+  position: absolute;
+
+  left: 8px;
+  bottom: 8px;
+
+  font-size: 22px;
+
+  filter:
+    drop-shadow(
+      2px 3px 2px rgba(0, 0, 0, 0.2)
+    );
+
+  animation:
+    fireGlow
+    0.8s
+    ease-in-out
+    infinite
+    alternate;
+
+  z-index: 4;
+}
+
+.camp-label {
+  position: absolute;
+
+  top: -4px;
+  left: 50%;
+
+  transform:
+    translateX(-50%)
+    rotateZ(-45deg)
+    rotateX(55deg);
+
+  padding: 5px 9px;
+
+  border-radius: 6px;
+
+  background: #405b37;
+
+  color: white;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.2);
+
+  z-index: 10;
+}
+
+/* ========================================
+   TARGET GLOW
+======================================== */
+
+.target-glow {
+  position: absolute;
+
+  left: 74%;
+  top: 18%;
+
+  width: 80px;
+  height: 50px;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 230, 120, 0.18);
+
+  box-shadow:
+    0 0 28px rgba(255, 224, 100, 0.28);
+
+  z-index: 5;
+
+  animation:
+    targetPulse
+    1.7s
+    ease-in-out
+    infinite;
+}
+
+/* ========================================
+   PLAYER
+======================================== */
+
+.player {
+  position: absolute;
+
+  width: 20%;
+  height: 20%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  z-index: 50;
+
+  transition:
+    left 0.35s ease,
+    top 0.35s ease;
+
+  pointer-events: none;
+}
+
+.player-shadow {
+  position: absolute;
+
+  width: 32px;
+  height: 13px;
+
+  bottom: 8px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(35, 65, 25, 0.3);
+
+  filter: blur(2px);
+}
+
+.player-character {
+  position: relative;
+
+  font-size: 39px;
+
+  line-height: 1;
+
+  transform:
+    translateY(-7px);
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.22)
+    );
+
+  animation:
+    playerBounce
+    1.4s
+    ease-in-out
+    infinite;
+}
+
+/* ========================================
+   CODE PANEL
+======================================== */
+
+.code-panel {
+  min-height: 215px;
+
+  padding: 18px 28px;
+
+  background: var(--panel);
+
+  border-top: 4px solid #9b8062;
+
+  box-shadow:
+    0 -6px 15px rgba(0, 0, 0, 0.1);
+
+  position: relative;
+
+  z-index: 60;
+}
+
+.code-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.code-label {
+  font-size: 11px;
+
+  letter-spacing: 2px;
+
+  font-weight: bold;
+
+  color: #8b735a;
+}
+
+.code-header h2 {
+  margin-top: 2px;
+
+  font-size: 20px;
+
+  color: #46372c;
+}
+
+.code-actions {
+  display: flex;
+
+  gap: 8px;
+}
+
+.reset-button {
+  padding: 11px 16px;
+
+  border: 2px solid #b59b7d;
+
+  border-radius: 8px;
+
+  background: #e3d2bb;
+
+  color: #65513d;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+.reset-button:hover {
+  background: #d8c4aa;
+}
+
+.run-button {
+  padding: 13px 23px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: var(--green);
+
+  color: white;
+
+  font-weight: bold;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 0 var(--green-dark);
+
+  transition: 0.15s;
+}
+
+.run-button:hover {
+  transform: translateY(-2px);
+}
+
+.run-button:active {
+  transform: translateY(3px);
+
+  box-shadow:
+    0 1px 0 var(--green-dark);
+}
+
+.reset-button:disabled,
+.run-button:disabled,
+.tool-block:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+/* ========================================
+   BLOCK TOOLBOX
+======================================== */
+
+.block-toolbox {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 12px;
+}
+
+.toolbox-label {
+  margin-right: 5px;
+
+  font-size: 10px;
+
+  font-weight: bold;
+
+  color: #8a7258;
+}
+
+.tool-block {
+  border: 0;
+
+  padding: 9px 14px;
+
+  border-radius: 6px;
+
+  color: white;
+
+  font-size: 11px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.18);
+
+  transition: 0.15s;
+}
+
+.tool-block:hover {
+  transform: translateY(-2px);
+}
+
+.tool-block:active {
+  transform: translateY(2px);
+}
+
+.move-block {
+  background: var(--blue);
+}
+
+.turn-block {
+  background: var(--orange);
+}
+
+.turn-left-block {
+  background: var(--purple);
+}
+
+/* ========================================
+   PROGRAM AREA
+======================================== */
+
+.program-area {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  min-height: 58px;
+
+  margin-top: 8px;
+
+  padding: 8px;
+
+  background: #d3bea4;
+
+  border: 2px dashed #ad9272;
+
+  border-radius: 8px;
+
+  overflow-x: auto;
+}
+
+.empty-program {
+  width: 100%;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  color: #806b54;
+}
+
+.code-block {
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  border: 0;
+
+  border-radius: 7px;
+
+  padding: 10px 13px;
+
+  color: white;
+
+  font-size: 11px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.2);
+
+  transition: 0.15s;
+}
+
+.code-block span {
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.25);
+
+  font-size: 9px;
+}
+
+.code-block:hover {
+  transform: translateY(-2px);
+}
+
+.code-block:active {
+  transform: translateY(2px);
+}
+
+/* ========================================
+   MESSAGES
+======================================== */
+
+.game-message {
+  margin-top: 8px;
+
+  padding: 8px 12px;
+
+  border-radius: 7px;
+
+  font-size: 12px;
+
+  font-weight: bold;
+
+  text-align: center;
+}
+
+.success-message {
+  background: #c9e4ae;
+
+  border: 2px solid #78a955;
+
+  color: #42642c;
+}
+
+.error-message {
+  background: #f2c7bb;
+
+  border: 2px solid #cc765e;
+
+  color: #793c2d;
+}
+
+.block-hint {
+  margin-top: 6px;
+
+  color: #806c54;
+
+  font-size: 12px;
+}
+
+/* ========================================
+   LEVEL COMPLETE
+======================================== */
+
+.level-complete {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 500;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    rgba(55, 45, 35, 0.55);
+
+  backdrop-filter: blur(5px);
+
+  animation:
+    completeFade
+    0.35s
+    ease;
+}
+
+.complete-card {
+  width: min(440px, 90%);
+
+  padding: 35px;
+
+  text-align: center;
+
+  background: #f7ead6;
+
+  border: 5px solid #6f573f;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 10px 0 #5c4634,
+    0 25px 50px rgba(0, 0, 0, 0.3);
+
+  animation:
+    completePop
+    0.45s
+    ease;
+}
+
+.complete-icon {
+  font-size: 70px;
+
+  animation:
+    completeBounce
+    1.2s
+    ease-in-out
+    infinite;
+}
+
+.complete-label {
+  margin-top: 10px;
+
+  font-size: 11px;
+
+  letter-spacing: 3px;
+
+  font-weight: 900;
+
+  color: #8b735a;
+}
+
+.complete-card h2 {
+  margin-top: 8px;
+
+  font-size: 32px;
+
+  color: #405b37;
+}
+
+.complete-card p {
+  margin-top: 8px;
+
+  color: #735e48;
+
+  font-size: 14px;
+}
+
+.complete-score {
+  display: inline-block;
+
+  margin-top: 18px;
+
+  padding: 9px 16px;
+
+  border-radius: 9px;
+
+  background: #dfc77d;
+
+  color: #5c4a28;
+
+  font-weight: 900;
+
+  font-size: 13px;
+}
+
+.next-area-button {
+  display: block;
+
+  width: 100%;
+
+  margin-top: 22px;
+
+  padding: 14px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: var(--green);
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 0 var(--green-dark);
+
+  transition: 0.2s;
+}
+
+.next-area-button:hover {
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   ANIMATIONS
+======================================== */
+
+@keyframes floating {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes cloudMove {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(30px);
+  }
+}
+
+@keyframes fireGlow {
+  from {
+    transform: scale(0.9);
+  }
+
+  to {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes playerBounce {
+  0%,
+  100% {
+    transform: translateY(-7px);
+  }
+
+  50% {
+    transform: translateY(-13px);
+  }
+}
+
+@keyframes targetPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.12);
+  }
+}
+
+@keyframes completeFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes completePop {
+  from {
+    transform: scale(0.8);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes completeBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+
+  .island {
+    transform:
+      translate(-50%, -44%)
+      rotateX(55deg)
+      rotateZ(-45deg)
+      scale(0.82);
+  }
+
+  .hud-stats {
+    gap: 8px;
+  }
+
+  .stat {
+    min-width: 60px;
+
+    padding: 7px;
+
+    font-size: 12px;
+  }
+
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 700px) {
+
+  .game-hud {
+    height: 60px;
+
+    padding: 0 12px;
+  }
+
+  .game-title {
+    font-size: 16px;
+
+    margin-left: 10px;
+  }
+
+  .hud-stats {
+    gap: 4px;
+  }
+
+  .stat {
+    min-width: auto;
+
+    padding: 6px;
+
+    font-size: 10px;
+  }
+
+  .challenge-title {
+    padding: 8px 15px;
+  }
+
+  .challenge-title h1 {
+    font-size: 14px;
+  }
+
+  .challenge-info {
+    display: none;
+  }
+
+  .island {
+    transform:
+      translate(-50%, -44%)
+      rotateX(55deg)
+      rotateZ(-45deg)
+      scale(0.65);
+  }
+
+  .code-panel {
+    padding: 15px;
+  }
+
+  .block-toolbox,
+  .program-area {
+    overflow-x: auto;
+  }
+
+}
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 500px) {
+
+  .start-card {
+    padding: 35px 20px;
+  }
+
+  .start-card h1 {
+    font-size: 52px;
+  }
+
+  .game-title {
+    font-size: 13px;
+  }
+
+  .menu-button {
+    width: 35px;
+    height: 35px;
+
+    font-size: 17px;
+  }
+
+  .hud-stats .stat:nth-child(2) {
+    display: none;
+  }
+
+  .island {
+    transform:
+      translate(-50%, -44%)
+      rotateX(55deg)
+      rotateZ(-45deg)
+      scale(0.52);
+  }
+
+  .reset-button,
+  .run-button {
+    padding: 9px 11px;
+
+    font-size: 11px;
+  }
+
+}
+/* ========================================
+   CLEAN WORLD OBJECT FIX
+======================================== */
+
+/* Remove the old accidental marker */
+.start-marker,
+.target-glow,
+.world-item,
+.object-shadow,
+.object-emoji {
+  display: none !important;
+}
+
+/* Clean trees */
+.tree {
+  position: absolute;
+  z-index: 20;
+
+  font-size: 48px;
+
+  transform:
+    rotateZ(45deg)
+    rotateX(-55deg);
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.2)
+    );
+}
+
+.tree-1 {
+  left: 17%;
+  top: 27%;
+}
+
+.tree-2 {
+  right: 14%;
+  bottom: 18%;
+}
+
+.tree {
+  font-size: 62px;
+}
+
+/* Clean rocks */
+.rock {
+  position: absolute;
+  z-index: 18;
+
+  font-size: 28px;
+
+  transform:
+    rotateZ(45deg)
+    rotateX(-55deg);
+
+  filter:
+    drop-shadow(
+      2px 4px 2px rgba(0, 0, 0, 0.18)
+    );
+}
+
+.rock-1 {
+  left: 39%;
+  top: 31%;
+}
+
+.rock-2 {
+  right: 27%;
+  bottom: 23%;
+}
+
+.rock {
+  font-size: 36px;
+}
+
+/* Camp */
+.camp-simple {
+  position: absolute;
+
+  left: 73%;
+  top: 19%;
+
+  width: 105px;
+  height: 105px;
+
+  z-index: 25;
+
+  transform:
+    translate(-50%, -50%)
+    rotateZ(45deg)
+    rotateX(-55deg);
+}
+
+.camp-tent {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  font-size: 70px;
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.22)
+    );
+}
+
+.camp-label {
+  position: absolute;
+
+  left: 50%;
+  top: -12px;
+
+  transform:
+    translateX(-50%)
+    rotateZ(-45deg)
+    rotateX(55deg);
+
+  padding: 5px 9px;
+
+  background: #405b37;
+
+  color: white;
+
+  border-radius: 5px;
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  white-space: nowrap;
+}
+
+/* Player */
+.player {
+  position: absolute;
+
+  width: 20%;
+  height: 20%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  z-index: 40;
+
+  transition:
+    left 0.35s ease,
+    top 0.35s ease;
+
+  font-size: 52px;
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.22)
+    );
+}
+
+/* Goal */
+.goal {
+  position: absolute;
+
+  right: 18%;
+  top: 12%;
+
+  z-index: 20;
+
+  font-size: 46px;
+
+  transform:
+    rotateZ(45deg)
+    rotateX(-55deg);
+
+  filter:
+    drop-shadow(
+      3px 4px 2px rgba(0, 0, 0, 0.2)
+    );
+}
+/* ========================================
+   BRIDGE / IF ELSE BLOCKS
+======================================== */
+
+.condition-block {
+  background: #d39a3c;
+}
+
+.cross-block {
+  background: #4f9b78;
+}
+
+.else-block {
+  background: #8c75b5;
+}
+
+.detour-block {
+  background: #c86f58;
+}
+/* ========================================
+   BRIDGE AREA
+======================================== */
+
+.bridge-area {
+  position: absolute;
+
+  left: 48%;
+  top: 43%;
+
+  width: 110px;
+  height: 90px;
+
+  z-index: 22;
+
+  transform:
+    translate(-50%, -50%)
+    rotateZ(45deg)
+    rotateX(-55deg);
+}
+
+.bridge-water {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 52px;
+
+  opacity: 0.8;
+}
+
+.bridge-object {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  font-size: 62px;
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.2)
+    );
+}
+
+.bridge-label {
+  position: absolute;
+
+  left: 50%;
+  top: -5px;
+
+  transform:
+    translateX(-50%)
+    rotateZ(-45deg)
+    rotateX(55deg);
+
+  padding: 5px 8px;
+
+  background: #405b37;
+
+  color: white;
+
+  border-radius: 5px;
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  white-space: nowrap;
+}
+/* ========================================
+   AREA 02 — RIVER CANYON
+======================================== */
+
+.river-world {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+}
+
+.river-sky {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #9ed9df 0%,
+      #d2e5d1 58%,
+      #7fa96b 100%
+    );
+}
+
+.river-sun {
+  position: absolute;
+  top: 25px;
+  right: 70px;
+
+  font-size: 50px;
+}
+
+.river-cloud {
+  position: absolute;
+
+  font-size: 38px;
+
+  opacity: 0.65;
+}
+
+.river-cloud-1 {
+  left: 12%;
+  top: 55px;
+}
+
+.river-cloud-2 {
+  right: 28%;
+  top: 85px;
+}
+
+.area-name {
+  position: absolute;
+
+  top: 20px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 9px 20px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 250, 235, 0.9);
+
+  color: #315c63;
+
+  font-size: 12px;
+
+  font-weight: 900;
+
+  letter-spacing: 2px;
+
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* MAP */
+
+.river-map {
+  position: absolute;
+
+  left: 50%;
+  top: 53%;
+
+  width: min(850px, 88%);
+  height: 320px;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 30px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 20px 35px rgba(0, 0, 0, 0.18);
+
+  background: #73b8ca;
+}
+
+/* WATER */
+
+.river-water {
+  position: absolute;
+
+  left: 21%;
+  right: 21%;
+  top: 0;
+  bottom: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #58a9c0,
+      #80cddd,
+      #55a6bd
+    );
+
+  overflow: hidden;
+}
+
+.water-line {
+  position: absolute;
+
+  width: 130px;
+  height: 10px;
+
+  border-top: 3px solid rgba(255,255,255,0.35);
+
+  border-radius: 50%;
+}
+
+.line-1 {
+  top: 18%;
+  left: 15%;
+}
+
+.line-2 {
+  top: 35%;
+  right: 8%;
+}
+
+.line-3 {
+  top: 55%;
+  left: 30%;
+}
+
+.line-4 {
+  top: 76%;
+  right: 25%;
+}
+
+/* LAND */
+
+.river-land {
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+
+  width: 24%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #86b76b,
+      #6d9b57
+    );
+}
+
+.river-left {
+  left: 0;
+
+  border-right:
+    12px solid #527f49;
+}
+
+.river-right {
+  right: 0;
+
+  border-left:
+    12px solid #527f49;
+}
+
+/* CLIFFS */
+
+.cliff {
+  position: absolute;
+
+  font-size: 55px;
+
+  filter:
+    drop-shadow(
+      4px 7px 3px rgba(0,0,0,0.25)
+    );
+
+  z-index: 8;
+}
+
+.cliff-1 {
+  left: 6%;
+  top: 15%;
+}
+
+.cliff-2 {
+  left: 12%;
+  bottom: 15%;
+}
+
+.cliff-3 {
+  right: 7%;
+  top: 48%;
+}
+
+/* BROKEN BRIDGE */
+
+/* ========================================
+   FIXED AREA 02 POSITIONS
+======================================== */
+
+.broken-bridge {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 150px;
+  height: 80px;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 15;
+}
+
+.bridge-piece {
+  position: absolute;
+
+  width: 72px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #9b663e;
+
+  border: 4px solid #74462d;
+
+  border-radius: 5px;
+
+  font-size: 22px;
+
+  box-shadow:
+    0 5px 0 rgba(0, 0, 0, 0.18);
+}
+
+.bridge-piece-1 {
+  left: 0;
+  top: 25px;
+
+  transform: rotate(-5deg);
+}
+
+.bridge-piece-2 {
+  right: 0;
+  top: 35px;
+
+  transform: rotate(5deg);
+}
+
+.broken-sign {
+  position: absolute;
+
+  left: 50%;
+  top: -18px;
+
+  transform: translateX(-50%);
+
+  font-size: 32px;
+
+  animation:
+    warningPulse
+    1.2s
+    ease-in-out
+    infinite;
+}
+
+/* SAFE BOAT */
+
+.detour-boat {
+  position: absolute;
+
+  left: 13%;
+  top: 28%;
+
+  font-size: 55px;
+
+  z-index: 18;
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0,0,0,0.2)
+    );
+
+  animation:
+    boatFloat
+    2s
+    ease-in-out
+    infinite;
+}
+
+.detour-label {
+  position: absolute;
+
+  left: 8%;
+  top: 48%;
+
+  padding: 6px 9px;
+
+  background: #315c63;
+
+  color: white;
+
+  border-radius: 6px;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+/* PLAYER */
+
+.river-player {
+  position: absolute;
+
+  width: 20%;
+  height: 20%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 45px;
+
+  z-index: 30;
+
+  transition:
+    left 0.5s ease,
+    top 0.5s ease;
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0,0,0,0.22)
+    );
+}
+
+/* BRIDGE BLOCKS */
+
+.inspect-block {
+  background: #4d8fa2;
+}
+
+.condition-block {
+  background: #d39a3c;
+}
+
+.cross-block {
+  background: #ad6250;
+}
+
+.detour-block {
+  background: #4d9b78;
+}
+
+.else-block {
+  background: #8c75b5;
+}
+
+/* ANIMATIONS */
+
+@keyframes warningPulse {
+  0%, 100% {
+    transform:
+      translateX(-50%)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translateX(-50%)
+      scale(1.15);
+  }
+}
+
+@keyframes boatFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-7px) rotate(2deg);
+  }
+}
+/* ========================================
+   AREA 03 — LOOPING FOREST
+======================================== */
+
+.forest-world {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+}
+
+/* ========================================
+   FOREST SKY
+======================================== */
+
+.forest-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      #8fc8b0 0%,
+      #b9d79d 52%,
+      #6d9659 100%
+    );
+}
+
+.forest-sun {
+  position: absolute;
+  top: 24px;
+  right: 75px;
+  font-size: 48px;
+  opacity: 0.9;
+}
+
+.forest-cloud {
+  position: absolute;
+  font-size: 36px;
+  opacity: 0.55;
+}
+
+.forest-cloud-1 {
+  left: 12%;
+  top: 55px;
+}
+
+.forest-cloud-2 {
+  right: 27%;
+  top: 75px;
+}
+
+.forest-area-name {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 9px 20px;
+  border-radius: 20px;
+  background: rgba(255, 250, 235, 0.92);
+  color: #31553c;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* ========================================
+   FOREST MAP
+======================================== */
+
+.forest-map {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: min(850px, 88%);
+  height: 320px;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  border-radius: 30px;
+  background:
+    linear-gradient(
+      135deg,
+      #4d7047,
+      #668b50
+    );
+  box-shadow:
+    0 20px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   FOREST GROUND
+======================================== */
+
+.forest-ground {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 8%;
+  bottom: 8%;
+  border-radius: 35px;
+  background:
+    linear-gradient(
+      135deg,
+      #7da35e,
+      #60874d
+    );
+  box-shadow:
+    inset 0 0 0 8px rgba(50, 75, 40, 0.2);
+}
+
+/* ========================================
+   WALKING PATH
+======================================== */
+
+.forest-path {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.path-tile {
+  width: 72px;
+  height: 48px;
+  border-radius: 9px;
+  background:
+    linear-gradient(
+      135deg,
+      #c7a16a,
+      #a98150
+    );
+  border:
+    3px solid #80613b;
+  box-shadow:
+    0 5px 0 rgba(70, 50, 30, 0.25);
+  transform:
+    rotateZ(45deg)
+    rotateX(-55deg);
+}
+
+/* Slight path variation */
+
+.path-1 {
+  transform:
+    rotateZ(45deg)
+    rotateX(-55deg);
+}
+
+.path-2 {
+  transform:
+    rotateZ(45deg)
+    rotateX(-55deg);
+}
+
+.path-3 {
+  transform:
+    rotateZ(45deg)
+    rotateX(-55deg);
+}
+
+.path-4 {
+  transform:
+    rotateZ(45deg)
+    rotateX(-55deg);
+}
+
+/* ========================================
+   FOREST TREES
+======================================== */
+
+.forest-tree {
+  position: absolute;
+  z-index: 20;
+  font-size: 58px;
+  filter:
+    drop-shadow(
+      4px 6px 3px rgba(0, 0, 0, 0.25)
+    );
+  transition:
+    transform 0.2s ease;
+}
+
+.tree-a {
+  left: 3%;
+  top: 5%;
+}
+
+.tree-b {
+  left: 6%;
+  bottom: 7%;
+}
+
+.tree-c {
+  left: 23%;
+  top: 3%;
+}
+
+.tree-d {
+  left: 24%;
+  bottom: 3%;
+}
+
+.tree-e {
+  right: 4%;
+  top: 4%;
+}
+
+.tree-f {
+  right: 6%;
+  bottom: 6%;
+}
+
+.tree-g {
+  right: 23%;
+  top: 2%;
+}
+
+.tree-h {
+  right: 24%;
+  bottom: 3%;
+}
+
+/* ========================================
+   ROCKS
+======================================== */
+
+.forest-rock {
+  position: absolute;
+  z-index: 15;
+  font-size: 34px;
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.2)
+    );
+}
+
+.forest-rock-1 {
+  left: 31%;
+  top: 22%;
+}
+
+.forest-rock-2 {
+  right: 31%;
+  bottom: 20%;
+}
+
+/* ========================================
+   MUSHROOMS
+======================================== */
+
+.forest-mushroom {
+  position: absolute;
+  z-index: 18;
+  font-size: 28px;
+  animation:
+    mushroomFloat 2.5s ease-in-out infinite;
+}
+
+.mushroom-1 {
+  left: 18%;
+  top: 47%;
+}
+
+.mushroom-2 {
+  right: 18%;
+  top: 54%;
+  animation-delay: 0.7s;
+}
+
+/* ========================================
+   LOG
+======================================== */
+
+.forest-log {
+  position: absolute;
+  right: 32%;
+  top: 43%;
+  z-index: 14;
+  font-size: 38px;
+  transform:
+    rotate(-18deg);
+  filter:
+    drop-shadow(
+      3px 4px 2px rgba(0, 0, 0, 0.2)
+    );
+}
+
+/* ========================================
+   LOOP CHECKPOINT
+======================================== */
+
+.loop-marker {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  z-index: 25;
+  text-align: center;
+}
+
+.loop-symbol {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  border-radius: 50%;
+  background: #e2a83f;
+  color: white;
+  font-size: 30px;
+  font-weight: 900;
+  border: 4px solid #815d24;
+  box-shadow:
+    0 7px 0 rgba(70, 45, 20, 0.25);
+  animation:
+    loopPulse 1.5s ease-in-out infinite;
+}
+
+.loop-marker-label {
+  margin-top: 8px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #31553c;
+  color: white;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+/* ========================================
+   FOREST EXIT
+======================================== */
+
+.forest-exit {
+  position: absolute;
+   left: 50%;
+  top: 5%;
+  transform: translateX(-50%);
+  z-index: 22;
+  text-align: center;
+}
+
+.exit-flag {
+  font-size: 43px;
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.2)
+    );
+}
+
+.exit-label {
+  margin-top: 3px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #31553c;
+  color: white;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+/* ========================================
+   FOREST PLAYER
+======================================== */
+
+.forest-player {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+  font-size: 45px;
+  transition:
+    left 0.6s ease,
+    top 0.6s ease;
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.25)
+    );
+}
+
+/* ========================================
+   FOREST ANIMATIONS
+======================================== */
+
+@keyframes loopPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes mushroomFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+/* ========================================
+   AREA 03 — LOOP BLOCKS
+======================================== */
+
+.repeat-block {
+  background: #d99b32 !important;
+  color: white !important;
+  border: 2px solid #9a671d !important;
+  box-shadow: 0 4px 0 #875918 !important;
+  font-weight: 900;
+}
+
+.repeat-block:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.scan-block {
+  background: #5d8fa3 !important;
+  color: white !important;
+  border: 2px solid #3d6878 !important;
+  box-shadow: 0 4px 0 #345968 !important;
+}
+
+.wait-block {
+  background: #806fa6 !important;
+  color: white !important;
+  border: 2px solid #5b4b7b !important;
+  box-shadow: 0 4px 0 #4b3d67 !important;
+}
+/* ========================================
+   AREA 04 — INVENTORY DOCK
+======================================== */
+
+.dock-world {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+}
+
+.dock-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      #f0c98b 0%,
+      #f4dfb1 55%,
+      #82a6a1 100%
+    );
+}
+
+.dock-sun {
+  position: absolute;
+  top: 24px;
+  right: 75px;
+  font-size: 48px;
+  opacity: 0.9;
+}
+
+.dock-cloud {
+  position: absolute;
+  font-size: 38px;
+  opacity: 0.55;
+}
+
+.dock-cloud-1 {
+  left: 12%;
+  top: 55px;
+}
+
+.dock-cloud-2 {
+  right: 27%;
+  top: 78px;
+}
+
+.dock-area-name {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 9px 20px;
+  border-radius: 20px;
+  background: rgba(255, 250, 235, 0.94);
+  color: #69513a;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.12);
+}
+
+.dock-map {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: min(850px, 88%);
+  height: 320px;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  border-radius: 30px;
+  background:
+    linear-gradient(
+      180deg,
+      #5d8e91,
+      #406f72
+    );
+  box-shadow:
+    0 20px 35px rgba(0, 0, 0, 0.2);
+}
+
+.dock-platform {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 8%;
+  bottom: 8%;
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    linear-gradient(
+      135deg,
+      #c79b63,
+      #a97a4d
+    );
+  box-shadow:
+    inset 0 0 0 8px rgba(90, 55, 30, 0.18);
+}
+
+.dock-floor {
+  position: absolute;
+  inset: 12%;
+  border-radius: 18px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(90, 55, 30, 0.08) 0,
+      rgba(90, 55, 30, 0.08) 3px,
+      transparent 3px,
+      transparent 48px
+    ),
+    #d3a970;
+  transform:
+    rotateZ(0deg);
+}
+
+.dock-water {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12%;
+  background:
+    linear-gradient(
+      180deg,
+      #5aa9b6,
+      #3d8290
+    );
+}
+
+.dock-water-left {
+  left: 0;
+}
+
+.dock-water-right {
+  right: 0;
+}
+
+.dock-crate {
+  position: absolute;
+  z-index: 20;
+  font-size: 45px;
+  filter:
+    drop-shadow(
+      4px 6px 3px rgba(0, 0, 0, 0.25)
+    );
+  animation:
+    crateFloat 2.8s ease-in-out infinite;
+}
+
+.crate-a {
+  left: 18%;
+  top: 28%;
+}
+
+.crate-b {
+  left: 29%;
+  bottom: 20%;
+  animation-delay: 0.4s;
+}
+
+.crate-c {
+  right: 26%;
+  top: 25%;
+  animation-delay: 0.8s;
+}
+
+.crate-d {
+  right: 17%;
+  bottom: 19%;
+  animation-delay: 1.2s;
+}
+
+.supply-counter {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  z-index: 35;
+  min-width: 120px;
+  padding: 8px 13px;
+  text-align: center;
+  border-radius: 12px;
+  background: #fff4dc;
+  border: 3px solid #775538;
+  box-shadow:
+    0 6px 0 rgba(75, 50, 30, 0.25);
+}
+
+.counter-title {
+  color: #76583d;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.counter-value {
+  display: inline-block;
+  margin-top: 1px;
+  color: #355d54;
+  font-size: 27px;
+  font-weight: 900;
+}
+
+.counter-goal {
+  display: inline-block;
+  margin-left: 2px;
+  color: #806b54;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.variable-sign {
+  position: absolute;
+  left: 50%;
+  bottom: 15%;
+  transform: translateX(-50%);
+  z-index: 28;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: #405d63;
+  color: white;
+  box-shadow:
+    0 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.variable-sign span {
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+
+.variable-sign strong {
+  margin-top: 2px;
+  color: #f4cf76;
+  font-size: 13px;
+}
+
+.dock-gate {
+  position: absolute;
+  right: 7%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  width: 70px;
+  height: 105px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid #69482f;
+  border-radius: 10px 10px 4px 4px;
+  background:
+    linear-gradient(
+      90deg,
+      #77553a,
+      #a8794c,
+      #77553a
+    );
+  box-shadow:
+    0 8px 0 rgba(60, 40, 25, 0.3);
+}
+
+.gate-icon {
+  font-size: 30px;
+}
+
+.gate-label {
+  position: absolute;
+  bottom: -25px;
+  padding: 4px 6px;
+  border-radius: 5px;
+  background: #405d63;
+  color: white;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.dock-arrow {
+  position: absolute;
+  right: 19%;
+  top: 52%;
+  z-index: 24;
+  color: #fff4dc;
+  font-size: 42px;
+  font-weight: 900;
+  animation:
+    dockArrowPulse 1.2s ease-in-out infinite;
+}
+
+.dock-player {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+  font-size: 45px;
+  transition:
+    left 0.6s ease,
+    top 0.6s ease;
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.25)
+    );
+}
+
+/* ========================================
+   AREA 04 BLOCKS
+======================================== */
+
+.variable-block {
+  background: #5b8191 !important;
+  color: white !important;
+  border: 2px solid #3f606c !important;
+  box-shadow: 0 4px 0 #334d56 !important;
+  font-weight: 900;
+}
+
+.collect-block {
+  background: #5c9a70 !important;
+  color: white !important;
+  border: 2px solid #3e704f !important;
+  box-shadow: 0 4px 0 #315b40 !important;
+  font-weight: 900;
+}
+
+.check-variable-block {
+  background: #c58d43 !important;
+  color: white !important;
+  border: 2px solid #8e652f !important;
+  box-shadow: 0 4px 0 #765326 !important;
+  font-weight: 900;
+}
+
+.gate-block {
+  background: #8a6e9d !important;
+  color: white !important;
+  border: 2px solid #634c74 !important;
+  box-shadow: 0 4px 0 #51405e !important;
+  font-weight: 900;
+}
+
+.variable-block:hover:not(:disabled),
+.collect-block:hover:not(:disabled),
+.check-variable-block:hover:not(:disabled),
+.gate-block:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+/* ========================================
+   AREA 04 ANIMATIONS
+======================================== */
+
+@keyframes crateFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes dockArrowPulse {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: translateX(6px);
+    opacity: 1;
+  }
+}
+/* ========================================
+   AREA 05 — DEBUGGING MOUNTAIN
+======================================== */
+
+.mountain-world {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+}
+
+.mountain-sky {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #9bc7d1 0%,
+      #c9d9d2 55%,
+      #7e8d80 100%
+    );
+}
+
+.mountain-sun {
+  position: absolute;
+  top: 22px;
+  right: 75px;
+  font-size: 48px;
+  opacity: 0.9;
+}
+
+.mountain-cloud {
+  position: absolute;
+  font-size: 38px;
+  opacity: 0.55;
+}
+
+.mountain-cloud-1 {
+  left: 10%;
+  top: 58px;
+}
+
+.mountain-cloud-2 {
+  right: 25%;
+  top: 82px;
+}
+
+.mountain-area-name {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 9px 20px;
+
+  border-radius: 20px;
+
+  background: rgba(246, 245, 232, 0.95);
+
+  color: #485951;
+
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.14);
+}
+
+.mountain-map {
+  position: absolute;
+
+  left: 50%;
+  top: 54%;
+
+  width: min(850px, 88%);
+  height: 320px;
+
+  transform: translate(-50%, -50%);
+
+  overflow: hidden;
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #6f8a82,
+      #506a61
+    );
+
+  box-shadow:
+    0 20px 35px rgba(0, 0, 0, 0.22);
+}
+
+.mountain-ground {
+  position: absolute;
+
+  left: 8%;
+  right: 8%;
+  top: 8%;
+  bottom: 7%;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #89927b,
+      #68715f
+    );
+
+  box-shadow:
+    inset 0 0 0 8px rgba(45, 55, 45, 0.2);
+}
+
+/* Mountain peaks */
+
+.mountain-peak {
+  position: absolute;
+
+  z-index: 5;
+
+  filter:
+    drop-shadow(
+      5px 7px 3px rgba(0, 0, 0, 0.22)
+    );
+}
+
+.peak-back {
+  left: 18%;
+  top: 0;
+
+  font-size: 110px;
+
+  opacity: 0.65;
+}
+
+.peak-main {
+  left: 38%;
+  top: -12px;
+
+  font-size: 135px;
+
+  opacity: 0.9;
+}
+
+/* Rocks */
+
+.mountain-rock {
+  position: absolute;
+
+  z-index: 15;
+
+  font-size: 38px;
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.2)
+    );
+}
+
+.rock-m1 {
+  left: 8%;
+  bottom: 15%;
+}
+
+.rock-m2 {
+  right: 9%;
+  bottom: 18%;
+}
+
+.rock-m3 {
+  left: 26%;
+  bottom: 10%;
+}
+
+/* Mountain path */
+
+.mountain-path {
+  position: absolute;
+
+  left: 12%;
+  top: 47%;
+
+  width: 55%;
+  height: 34%;
+
+  transform: skewX(-18deg);
+
+  border-radius: 20px;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #a89979 0,
+      #a89979 38px,
+      #94876b 38px,
+      #94876b 42px
+    );
+
+  box-shadow:
+    inset 0 0 0 5px rgba(65, 60, 45, 0.15);
+}
+
+.mountain-path-tile {
+  position: absolute;
+
+  width: 17%;
+  height: 70%;
+
+  top: 15%;
+
+  border-radius: 7px;
+
+  background: rgba(255, 246, 207, 0.18);
+}
+
+.mp-1 {
+  left: 4%;
+}
+
+.mp-2 {
+  left: 23%;
+}
+
+.mp-3 {
+  left: 42%;
+}
+
+.mp-4 {
+  left: 61%;
+}
+
+.mp-5 {
+  left: 80%;
+}
+
+/* Debug terminal */
+
+.debug-terminal {
+  position: absolute;
+
+  right: 12%;
+  top: 28%;
+
+  z-index: 30;
+
+  width: 105px;
+  height: 85px;
+
+  padding: 10px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #34434a,
+      #202b30
+    );
+
+  border: 4px solid #172127;
+
+  box-shadow:
+    0 8px 0 rgba(0, 0, 0, 0.25);
+}
+
+.terminal-screen {
+  height: 47px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+
+  background: #b8d7c0;
+
+  color: #263e36;
+
+  text-align: center;
+}
+
+.terminal-screen span {
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.terminal-screen strong {
+  margin-top: 3px;
+
+  font-size: 9px;
+}
+
+.terminal-light {
+  width: 9px;
+  height: 9px;
+
+  margin-top: 8px;
+
+  border-radius: 50%;
+
+  background: #e7c76c;
+
+  box-shadow:
+    0 0 8px rgba(231, 199, 108, 0.7);
+}
+
+/* Elevator */
+
+.elevator {
+  position: absolute;
+
+  right: 7%;
+  bottom: 13%;
+
+  z-index: 28;
+
+  width: 82px;
+  height: 95px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border: 5px solid #4a4037;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #69777a,
+      #3f4d50
+    );
+
+  box-shadow:
+    0 8px 0 rgba(0, 0, 0, 0.25);
+}
+
+.elevator-door {
+  font-size: 35px;
+}
+
+.elevator-label {
+  margin-top: 5px;
+
+  padding: 4px 6px;
+
+  border-radius: 5px;
+
+  background: #394942;
+
+  color: white;
+
+  font-size: 7px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+/* Bug sign */
+
+.bug-sign {
+  position: absolute;
+
+  left: 52%;
+  bottom: 11%;
+
+  z-index: 35;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 6px 9px;
+
+  border-radius: 7px;
+
+  background: #754c42;
+
+  color: white;
+
+  box-shadow:
+    0 5px 0 rgba(0, 0, 0, 0.22);
+
+  font-size: 25px;
+}
+
+.bug-sign span {
+  margin-top: 2px;
+
+  font-size: 7px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+/* Player */
+
+.mountain-player {
+  position: absolute;
+
+  width: 20%;
+  height: 20%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 50;
+
+  font-size: 45px;
+
+  transition:
+    left 0.6s ease,
+    top 0.6s ease;
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0, 0, 0, 0.25)
+    );
+}
+
+/* Summit */
+
+.summit-flag {
+  position: absolute;
+
+  right: 20%;
+  top: 8%;
+
+  z-index: 25;
+
+  font-size: 38px;
+
+  filter:
+    drop-shadow(
+      3px 4px 2px rgba(0, 0, 0, 0.2)
+    );
+}
+
+.summit-label {
+  position: absolute;
+
+  right: 18%;
+  top: 24%;
+
+  z-index: 25;
+
+  padding: 5px 8px;
+
+  border-radius: 5px;
+
+  background: #40574d;
+
+  color: white;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+/* ========================================
+   AREA 05 — DEBUGGING BLOCKS
+======================================== */
+
+.debug-move-block {
+  background: #607f72 !important;
+  color: white !important;
+
+  border: 2px solid #415c51 !important;
+
+  box-shadow:
+    0 4px 0 #344a42 !important;
+
+  font-weight: 900;
+}
+
+.debug-turn-block {
+  background: #c18c4e !important;
+  color: white !important;
+
+  border: 2px solid #8e642f !important;
+
+  box-shadow:
+    0 4px 0 #6f4f27 !important;
+
+  font-weight: 900;
+}
+
+.bug-block {
+  background: #9c5b52 !important;
+  color: white !important;
+
+  border: 2px solid #733f39 !important;
+
+  box-shadow:
+    0 4px 0 #59302c !important;
+
+  font-weight: 900;
+}
+
+.debug-bug-block {
+  position: relative;
+
+  animation:
+    bugPulse 1s ease-in-out infinite;
+}
+
+.debug-tip {
+  width: 100%;
+
+  margin-top: 5px;
+  padding: 9px 11px;
+
+  border-radius: 9px;
+
+  background: #f4ead1;
+
+  color: #695743;
+
+  border-left: 4px solid #a75e4e;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  line-height: 1.45;
+}
+
+/* ========================================
+   AREA 05 — ANIMATIONS
+======================================== */
+
+@keyframes bugPulse {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-2px);
+  }
+
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+/* =========================================================
+   AREA 06 — FINAL ESCAPE AREA
+   CLEAN GAMEPLAY VERSION
+========================================================= */
+
+.final-world {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 560px;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #667bd4 0%,
+      #8798df 48%,
+      #c9b0a5 100%
+    );
+}
+
+/* =========================================================
+   SKY
+========================================================= */
+
+.final-sky {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.final-sun {
+  position: absolute;
+  right: 8%;
+  top: 5%;
+
+  font-size: 65px;
+
+  filter:
+    drop-shadow(
+      0 8px 15px rgba(255, 210, 80, 0.4)
+    );
+}
+
+.final-cloud {
+  position: absolute;
+
+  font-size: 55px;
+
+  opacity: 0.75;
+}
+
+.final-cloud-1 {
+  left: 8%;
+  top: 8%;
+}
+
+.final-cloud-2 {
+  left: 42%;
+  top: 5%;
+  transform: scale(0.8);
+}
+
+/* =========================================================
+   AREA TITLE
+========================================================= */
+
+.final-area-name {
+  position: absolute;
+
+  left: 50%;
+  top: 4%;
+
+  transform: translateX(-50%);
+
+  z-index: 100;
+
+  padding: 11px 20px;
+
+  background: rgba(26, 35, 61, 0.94);
+
+  border:
+    2px solid rgba(255,255,255,0.25);
+
+  border-radius: 12px;
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 8px 20px rgba(20,30,60,0.25);
+}
+
+/* =========================================================
+   MAP
+========================================================= */
+
+.final-map {
+  position: absolute;
+
+  left: 5%;
+  right: 5%;
+  top: 16%;
+  bottom: 5%;
+
+  z-index: 5;
+}
+
+/* =========================================================
+   WATER
+========================================================= */
+
+.final-water {
+  position: absolute;
+
+  left: 2%;
+  right: 2%;
+  top: 5%;
+  bottom: 4%;
+
+  border-radius: 32px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3e91bb,
+      #2d78a8
+    );
+
+  box-shadow:
+    inset 0 0 45px rgba(0,40,90,0.25),
+    0 18px 30px rgba(0,30,70,0.2);
+}
+
+/* water lines */
+
+.final-water-line {
+  position: absolute;
+
+  width: 100px;
+  height: 4px;
+
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.2);
+}
+
+.final-water-line-1 {
+  left: 8%;
+  top: 25%;
+}
+
+.final-water-line-2 {
+  right: 12%;
+  top: 38%;
+}
+
+.final-water-line-3 {
+  left: 15%;
+  bottom: 25%;
+}
+
+.final-water-line-4 {
+  right: 20%;
+  bottom: 15%;
+}
+
+/* =========================================================
+   MAIN ISLAND
+========================================================= */
+
+.final-island {
+  position: absolute;
+
+  left: 8%;
+  right: 8%;
+  top: 7%;
+  bottom: 7%;
+
+  z-index: 10;
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #a6d46e 0%,
+      #8fc45b 50%,
+      #73a94e 100%
+    );
+
+  border:
+    3px solid rgba(55,100,45,0.35);
+
+  box-shadow:
+    0 18px 0 #507d3e,
+    0 28px 35px rgba(30,55,30,0.35);
+
+  overflow: visible;
+
+  /* IMPORTANT:
+     no rotate
+     no scale
+     no rotateX
+  */
+}
+
+/* =========================================================
+   ISLAND GRID
+========================================================= */
+
+.final-tile {
+  position: absolute;
+
+  width: 20%;
+  height: 25%;
+
+  border:
+    1px solid rgba(55,100,45,0.14);
+
+  background:
+    rgba(255,255,255,0.035);
+}
+
+.final-tile-1 {
+  left: 0;
+  top: 0;
+}
+
+.final-tile-2 {
+  left: 20%;
+  top: 0;
+}
+
+.final-tile-3 {
+  left: 40%;
+  top: 0;
+}
+
+.final-tile-4 {
+  left: 60%;
+  top: 0;
+}
+
+.final-tile-5 {
+  left: 80%;
+  top: 0;
+}
+
+.final-tile-6 {
+  left: 20%;
+  top: 50%;
+}
+
+.final-tile-7 {
+  left: 40%;
+  top: 50%;
+}
+
+.final-tile-8 {
+  left: 60%;
+  top: 50%;
+}
+
+/* =========================================================
+   TREES
+========================================================= */
+
+.final-tree {
+  position: absolute;
+
+  z-index: 30;
+
+  font-size: 58px;
+
+  filter:
+    drop-shadow(
+      5px 7px 3px rgba(0,0,0,0.2)
+    );
+}
+
+.final-tree-1 {
+  left: 5%;
+  top: 5%;
+}
+
+.final-tree-2 {
+  right: 5%;
+  bottom: 5%;
+}
+
+/* =========================================================
+   ROCKS
+========================================================= */
+
+.final-rock {
+  position: absolute;
+
+  z-index: 25;
+
+  font-size: 34px;
+
+  filter:
+    drop-shadow(
+      3px 5px 2px rgba(0,0,0,0.18)
+    );
+}
+
+.final-rock-1 {
+  left: 28%;
+  bottom: 12%;
+}
+
+.final-rock-2 {
+  right: 25%;
+  top: 22%;
+}
+
+/* =========================================================
+   ENERGY CRYSTALS
+========================================================= */
+
+.energy-crystal {
+  position: absolute;
+
+  z-index: 35;
+
+  font-size: 35px;
+
+  filter:
+    drop-shadow(
+      0 0 12px rgba(50,220,255,0.8)
+    );
+
+  animation:
+    crystalPulse 1.8s ease-in-out infinite alternate;
+}
+
+.crystal-1 {
+  left: 29%;
+  top: 18%;
+}
+
+.crystal-2 {
+  right: 31%;
+  top: 47%;
+}
+
+.crystal-3 {
+  left: 47%;
+  bottom: 12%;
+}
+
+@keyframes crystalPulse {
+
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-5px);
+  }
+
+}
+
+/* =========================================================
+   ENERGY STATION
+========================================================= */
+
+.energy-station {
+  position: absolute;
+
+  left: 9%;
+  top: 38%;
+
+  width: 125px;
+  min-height: 100px;
+
+  z-index: 45;
+
+  padding: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #354562,
+      #172235
+    );
+
+  border:
+    3px solid #607796;
+
+  border-radius: 12px;
+
+  box-shadow:
+    7px 9px 0 rgba(20,30,45,0.25);
+
+  text-align: center;
+}
+
+.station-screen {
+  width: 50px;
+  height: 38px;
+
+  margin: 0 auto 5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #0c1625;
+
+  border-radius: 6px;
+
+  font-size: 22px;
+
+  box-shadow:
+    inset 0 0 15px rgba(80,220,255,0.35);
+}
+
+.station-data {
+  color: #e8f8ff;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+.station-status {
+  margin-top: 4px;
+
+  color: #79f5ad;
+
+  font-size: 8px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   ESCAPE POD
+========================================================= */
+
+.escape-pod {
+  position: absolute;
+
+  right: 10%;
+  top: 12%;
+
+  width: 155px;
+  height: 155px;
+
+  z-index: 55;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pod-body {
+  position: relative;
+
+  z-index: 3;
+
+  font-size: 105px;
+
+  filter:
+    drop-shadow(
+      7px 10px 4px rgba(0,0,0,0.25)
+    );
+}
+
+.pod-window {
+  position: absolute;
+
+  left: 50%;
+  top: 30%;
+
+  transform: translateX(-50%);
+
+  z-index: 10;
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle,
+      #ffffff,
+      #65d9ef
+    );
+
+  border:
+    3px solid #293b58;
+
+  border-radius: 50%;
+
+  color: white;
+
+  font-size: 12px;
+
+  box-shadow:
+    0 0 18px rgba(80,230,255,0.85);
+}
+
+.pod-glow {
+  position: absolute;
+
+  left: 50%;
+  bottom: 5px;
+
+  transform: translateX(-50%);
+
+  width: 70px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(80,230,255,0.9),
+      transparent
+    );
+
+  filter: blur(4px);
+
+  animation:
+    podGlow 1s infinite alternate;
+}
+
+.pod-label {
+  position: absolute;
+
+  left: 50%;
+  bottom: -5px;
+
+  transform: translateX(-50%);
+
+  padding: 6px 10px;
+
+  background: #28354d;
+
+  border-radius: 6px;
+
+  color: white;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  white-space: nowrap;
+}
+
+@keyframes podGlow {
+
+  from {
+    opacity: 0.45;
+    transform:
+      translateX(-50%)
+      scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateX(-50%)
+      scale(1.15);
+  }
+
+}
+
+/* =========================================================
+   LAUNCH PAD
+========================================================= */
+
+.launch-pad {
+  position: absolute;
+
+  right: 23%;
+  bottom: 10%;
+
+  width: 160px;
+  height: 115px;
+
+  z-index: 40;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      #596980,
+      #2c394e
+    );
+
+  border:
+    4px solid #202b3d;
+
+  border-radius: 14px;
+
+  box-shadow:
+    7px 9px 0 rgba(20,30,45,0.25);
+}
+
+.launch-ring {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  border:
+    3px solid rgba(100,225,255,0.75);
+}
+
+.launch-ring-outer {
+  width: 105px;
+  height: 75px;
+}
+
+.launch-ring-middle {
+  width: 70px;
+  height: 50px;
+}
+
+.launch-ring-inner {
+  width: 35px;
+  height: 25px;
+
+  border-color: white;
+}
+
+.launch-arrow {
+  position: absolute;
+
+  top: 20%;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  color: #78eaff;
+
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.launch-text {
+  position: absolute;
+
+  bottom: -28px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  color: white;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   SYSTEM TERMINAL
+========================================================= */
+
+.final-terminal {
+  position: absolute;
+
+  left: 42%;
+  top: 12%;
+
+  width: 175px;
+
+  z-index: 50;
+
+  background: #111827;
+
+  border:
+    3px solid #405574;
+
+  border-radius: 9px;
+
+  overflow: hidden;
+
+  box-shadow:
+    7px 9px 0 rgba(20,30,40,0.25);
+}
+
+.terminal-top {
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 0 9px;
+
+  background: #202c40;
+
+  color: #c7d8ec;
+
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.terminal-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #72869e;
+}
+
+.terminal-title {
+  margin-left: 5px;
+
+  letter-spacing: 1px;
+}
+
+.terminal-body {
+  padding: 12px;
+
+  color: #9db0c8;
+
+  font-family: monospace;
+
+  font-size: 9px;
+
+  line-height: 1.9;
+}
+
+.terminal-body strong {
+  color: #f6cf71;
+}
+
+.terminal-warning {
+  margin-top: 5px;
+
+  padding-top: 5px;
+
+  border-top:
+    1px solid #39475b;
+
+  color: #ff8585;
+
+  font-weight: 900;
+}
+
+/* =========================================================
+   FINAL MISSION SIGN
+========================================================= */
+
+.final-sign {
+  position: absolute;
+
+  left: 10%;
+  bottom: 10%;
+
+  z-index: 45;
+
+  padding: 10px 14px;
+
+  background: #29374e;
+
+  border:
+    3px solid #526985;
+
+  border-radius: 9px;
+
+  color: white;
+
+  text-align: center;
+
+  box-shadow:
+    6px 8px 0 rgba(20,30,40,0.2);
+}
+
+.final-sign-icon {
+  font-size: 23px;
+}
+
+.final-sign strong {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 10px;
+
+  letter-spacing: 1px;
+}
+
+.final-sign small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #9bdceb;
+
+  font-size: 7px;
+
+  font-weight: 800;
+}
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+.final-player {
+  position: absolute;
+
+  width: 20%;
+  height: 20%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 80;
+
+  font-size: 58px;
+
+  transition:
+    left 0.45s ease,
+    top 0.45s ease;
+
+  filter:
+    drop-shadow(
+      4px 7px 3px rgba(0,0,0,0.25)
+    );
+}
+
+/* =========================================================
+   OBJECTIVE BAR
+========================================================= */
+
+.final-objective {
+  position: absolute;
+
+  left: 50%;
+  bottom: 2.5%;
+
+  transform: translateX(-50%);
+
+  z-index: 200;
+
+  width: auto;
+  max-width: 80%;
+
+  padding: 10px 18px;
+
+  background:
+    rgba(25,32,52,0.95);
+
+  border:
+    1px solid rgba(255,255,255,0.2);
+
+  border-radius: 10px;
+
+  color: white;
+
+  font-size: 11px;
+
+  text-align: center;
+
+  box-shadow:
+    0 8px 22px rgba(0,0,0,0.25);
+}
+
+.final-objective span {
+  margin-right: 9px;
+
+  color: #6ee7ff;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .final-area-name {
+    font-size: 10px;
+    padding: 8px 12px;
+  }
+
+  .escape-pod {
+    transform: scale(0.8);
+    transform-origin: center;
+  }
+
+  .final-terminal {
+    transform: scale(0.85);
+    transform-origin: center;
+  }
+
+  .energy-station {
+    transform: scale(0.85);
+    transform-origin: center;
+  }
+
+}
